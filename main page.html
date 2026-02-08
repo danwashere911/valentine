@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Counting Down to You</title>
+    <style>
+        body { background: #fff5f5; font-family: 'Arial', sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; color: #d63384; }
+        #countdown { font-size: 3rem; font-weight: bold; margin-bottom: 20px; }
+        .login-box { display: none; text-align: center; }
+        input { padding: 10px; border: 2px solid #ff4d6d; border-radius: 20px; text-align: center; outline: none; }
+        button { padding: 10px 20px; background: #ff4d6d; color: white; border: none; border-radius: 20px; cursor: pointer; margin-left: 10px; }
+    </style>
+</head>
+<body>
+
+    <h2 id="header">Days until Valentine's...</h2>
+    <div id="countdown"></div>
+
+    <div class="login-box" id="loginBox">
+        <p>Enter our special code:</p>
+        <input type="password" id="password" placeholder="***">
+        <button onclick="checkPass()">Unlock</button>
+    </div>
+
+    <script>
+        const targetDate = new Date("Feb 14, 2026 00:00:00").getTime();
+
+        const timer = setInterval(function() {
+            const now = new Date().getTime();
+            const diff = targetDate - now;
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const secs = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById("countdown").innerHTML = `${days}d ${hours}h ${mins}m ${secs}s`;
+
+            if (diff <= 0) {
+                clearInterval(timer);
+                document.getElementById("header").innerHTML = "Happy Valentine's Day!";
+                document.getElementById("countdown").style.display = "none";
+                document.getElementById("loginBox").style.display = "block";
+            }
+        }, 1000);
+
+        function checkPass() {
+            if (document.getElementById("password").value === "911") {
+                window.location.href = "Reavel.html";
+            } else {
+                alert("Wrong code, try again!");
+            }
+        }
+    </script>
+</body>
+</html>

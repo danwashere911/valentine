@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Valentine</title>
+    <style>
+        body { 
+            background: #ffebf0; 
+            text-align: center; 
+            font-family: 'Georgia', serif; 
+            padding: 20px; 
+            overflow-x: hidden;
+        }
+        
+        h1 { color: #ff4d6d; margin-top: 50px; }
+
+        /* Floating Hearts Animation */
+        .heart {
+            position: fixed;
+            bottom: -10px;
+            font-size: 20px;
+            color: #ff4d6d;
+            user-select: none;
+            z-index: -1;
+            animation: float Up 5s linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Message Cards */
+        .message-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin: 30px 0; }
+        .card { 
+            width: 250px; height: 150px; display: flex; align-items: center; justify-content: center;
+            background: white; border-radius: 15px; cursor: pointer; border: 2px dashed #ff4d6d; 
+            color: transparent; transition: 0.5s; position: relative; padding: 10px;
+        }
+        .card::after { content: 'Tap to Read ❤️'; color: #ff4d6d; position: absolute; }
+        .card.revealed { color: #555; background: #fff; border-style: solid; transform: scale(1.05); }
+        .card.revealed::after { display: none; }
+
+        /* Photo Gallery */
+        .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; max-width: 800px; margin: 50px auto; }
+        .gallery img { width: 100%; border-radius: 10px; border: 5px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); transition: 0.3s; }
+        .gallery img:hover { transform: rotate(-3deg) scale(1.05); }
+
+        /* Music Player Styling */
+        .music-box { margin: 20px 0; padding: 10px; background: rgba(255, 255, 255, 0.5); border-radius: 30px; display: inline-block; }
+    </style>
+</head>
+<body>
+
+    <div class="music-box">
+        <p style="font-size: 0.8rem; margin: 0 0 5px 0;">Our Song 🎵</p>
+        <audio controls src="your-song.mp3"></audio>
+    </div>
+
+    <h1>To My Favorite Person...</h1>
+
+    <div class="message-container">
+        <div class="card" onclick="this.classList.add('revealed')">I love how you always make me laugh!</div>
+        <div class="card" onclick="this.classList.add('revealed')">You're my biggest supporter and best friend.</div>
+        <div class="card" onclick="this.classList.add('revealed')">Thank you for being you. Happy Valentine's!</div>
+    </div>
+
+    <h3>Our Favorite Moments</h3>
+    <div class="gallery">
+        <img src="photo1.jpg" alt="Memories">
+        <img src="photo2.jpg" alt="Memories">
+        <img src="photo3.jpg" alt="Memories">
+    </div>
+
+    <script>
+        // Function to create floating hearts
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 3 + 2 + 's';
+            document.body.appendChild(heart);
+
+            setTimeout(() => { heart.remove(); }, 5000);
+        }
+        setInterval(createHeart, 300);
+    </script>
+
+</body>
+</html>
