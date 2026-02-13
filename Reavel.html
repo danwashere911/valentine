@@ -5,25 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Valentine</title>
     <style>
+        :root {
+            --primary-pink: #ffebf0;
+            --dark-pink: #ff4d6d;
+            --text-gray: #444;
+        }
+
         body { 
-            background: #ffebf0; 
+            background: var(--primary-pink); 
             text-align: center; 
             font-family: 'Georgia', serif; 
-            padding: 20px; 
+            padding: 20px 0; 
+            margin: 0;
             overflow-x: hidden;
         }
         
-        h1 { color: #ff4d6d; margin-top: 50px; }
+        h1 { color: var(--dark-pink); margin-top: 30px; font-size: 2rem; }
+        h3 { color: var(--dark-pink); margin-top: 60px; }
 
         /* Floating Hearts Animation */
         .heart {
             position: fixed;
             bottom: -10px;
             font-size: 20px;
-            color: #ff4d6d;
+            color: var(--dark-pink);
             user-select: none;
             z-index: -1;
-            animation: float Up 5s linear infinite;
+            animation: floatUp 5s linear infinite;
         }
 
         @keyframes floatUp {
@@ -31,50 +39,155 @@
             100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
         }
 
-        /* Message Cards */
-        .message-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin: 30px 0; }
-        .card { 
-            width: 250px; height: 150px; display: flex; align-items: center; justify-content: center;
-            background: white; border-radius: 15px; cursor: pointer; border: 2px dashed #ff4d6d; 
-            color: transparent; transition: 0.5s; position: relative; padding: 10px;
+        /* Horizontal Scroll Container */
+        .scroll-hint { font-size: 0.9rem; color: var(--dark-pink); margin-bottom: 10px; font-style: italic; }
+        
+        .message-container { 
+            display: flex; 
+            overflow-x: auto; 
+            gap: 20px; 
+            padding: 20px 40px 40px 40px; 
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
         }
-        .card::after { content: 'Tap to Read ❤️'; color: #ff4d6d; position: absolute; }
-        .card.revealed { color: #555; background: #fff; border-style: solid; transform: scale(1.05); }
+
+        /* Pretty Scrollbar */
+        .message-container::-webkit-scrollbar {
+            height: 10px;
+            display: block;
+        }
+        .message-container::-webkit-scrollbar-track {
+            background: #fff0f3;
+            border-radius: 10px;
+        }
+        .message-container::-webkit-scrollbar-thumb {
+            background: var(--dark-pink);
+            border-radius: 10px;
+            border: 2px solid #fff0f3;
+        }
+
+        .card { 
+            flex: 0 0 280px; 
+            height: 180px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            background: white; 
+            border-radius: 20px; 
+            cursor: pointer; 
+            border: 2px dashed var(--dark-pink); 
+            color: transparent; 
+            transition: background 0.4s, border 0.4s, color 0.4s; 
+            position: relative; 
+            padding: 20px;
+            scroll-snap-align: center;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.05);
+            box-sizing: border-box;
+            z-index: 1; /* Keeps cards at base level */
+        }
+        
+        .card::after { 
+            content: 'Tap to Read ❤️'; 
+            color: var(--dark-pink); 
+            position: absolute; 
+            font-size: 0.9rem;
+        }
+
+        /* FIXED: Removed transform: scale to stop overlapping */
+        .card.revealed { 
+            color: var(--text-gray); 
+            background: #ffffff; 
+            border: 2px solid var(--dark-pink); 
+            font-size: 1.05rem;
+            line-height: 1.5;
+            z-index: 2; /* Brings revealed card slightly forward without growing it */
+        }
+
         .card.revealed::after { display: none; }
 
         /* Photo Gallery */
-        .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; max-width: 800px; margin: 50px auto; }
-        .gallery img { width: 100%; border-radius: 10px; border: 5px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); transition: 0.3s; }
-        .gallery img:hover { transform: rotate(-3deg) scale(1.05); }
+        .gallery { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+            gap: 15px; 
+            max-width: 1000px; 
+            margin: 30px auto; 
+            padding: 0 20px;
+        }
 
-        /* Music Player Styling */
-        .music-box { margin: 20px 0; padding: 10px; background: rgba(255, 255, 255, 0.5); border-radius: 30px; display: inline-block; }
+        .gallery img { 
+            width: 100%; 
+            aspect-ratio: 1/1;
+            object-fit: cover;
+            border-radius: 10px; 
+            border: 6px solid white; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
+            transition: 0.3s; 
+        }
+
+        .gallery img:hover { transform: translateY(-5px) rotate(2deg); }
+
+        /* Music Player */
+        .music-box { 
+            margin-bottom: 20px;
+            padding: 10px 20px; 
+            background: white; 
+            border-radius: 50px; 
+            display: inline-block;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
     </style>
 </head>
 <body>
 
     <div class="music-box">
-        <p style="font-size: 0.8rem; margin: 0 0 5px 0;">Our Song 🎵</p>
-        <audio controls src="your-song.mp3"></audio>
+        <p style="font-size: 0.8rem; margin: 0 0 5px 0; color: #ff4d6d;">Our Playlist 🎵</p>
+        <audio controls src="Laufey - Valentine (Official Audio).mp3"></audio>
     </div>
 
-    <h1>To My Favorite Person...</h1>
-
+    <h1>Happy Valentine's Day!</h1>
+    
+    <p class="scroll-hint">Swipe to see more messages →</p>
+    
     <div class="message-container">
-        <div class="card" onclick="this.classList.add('revealed')">I love how you always make me laugh!</div>
-        <div class="card" onclick="this.classList.add('revealed')">You're my biggest supporter and best friend.</div>
-        <div class="card" onclick="this.classList.add('revealed')">Thank you for being you. Happy Valentine's!</div>
+        <div class="card" onclick="this.classList.add('revealed')">I love that your one of my bestfriends.</div>
+        <div class="card" onclick="this.classList.add('revealed')">I love how you always make me feel safe and happy.</div>
+        <div class="card" onclick="this.classList.add('revealed')">I love how we share our hobbies.</div>
+        <div class="card" onclick="this.classList.add('revealed')">I love it when we play with each other.</div>
+        <div class="card" onclick="this.classList.add('revealed')">I love that your patient with me.</div>
+        <div class="card" onclick="this.classList.add('revealed')">I love watching shows with you.</div>
+        <div class="card" onclick="this.classList.add('revealed')">I love it when talk.</div>
+        <div class="card" onclick="this.classList.add('revealed')">I love it when you laugh.</div>
+        <div class="card" onclick="this.classList.add('revealed')">I love you when your dirty</div>
+        <div class="card" onclick="this.classList.add('revealed')">I love you when your nerding about your games</div>
+        <div class="card" onclick="this.classList.add('revealed')">I love it when you carry me</div>
+        <div class="card" onclick="this.classList.add('revealed')">I love you forever and always! ❤️</div>
     </div>
 
-    <h3>Our Favorite Moments</h3>
+    <h3>Our Beautiful Memories</h3>
     <div class="gallery">
-        <img src="photo1.jpg" alt="Memories">
-        <img src="photo2.jpg" alt="Memories">
-        <img src="photo3.jpg" alt="Memories">
+        <img src="Image/gotham.png" alt="Us">
+        <img src="Image/ittakes.png" alt="Us">
+        <img src="Image/ln3.png" alt="Us">
+        <img src="Image/omg.png" alt="Us">
+        <img src="Image/73158EEE-159D-4043-8E45-F318EE404164.jpg" alt="Us">
+        <img src="Image/IMG_1924.jpg" alt="Us">
+        <img src="Image/IMG_5008.jpg" alt="Us">
+        <img src="Image/IMG_2235.jpg" alt="Us">
+    </div>
+
+    <div class="final-message">
+        <h2>To My Forever Valentine</h2>
+        <p>
+            Never in my life I imagined that I would actually love a guy so much to the point that I hang out with him more than anyone,
+            <br>you are my love , bestfriend and soulmate I can't wait to live a life full of fun with you.
+            <br>You made me a better person and hopefully I did that to you too.
+            <br><br>
+            With love,Danah🌙✨
+        </p>
     </div>
 
     <script>
-        // Function to create floating hearts
         function createHeart() {
             const heart = document.createElement('div');
             heart.classList.add('heart');
@@ -82,10 +195,9 @@
             heart.style.left = Math.random() * 100 + 'vw';
             heart.style.animationDuration = Math.random() * 3 + 2 + 's';
             document.body.appendChild(heart);
-
             setTimeout(() => { heart.remove(); }, 5000);
         }
-        setInterval(createHeart, 300);
+        setInterval(createHeart, 400);
     </script>
 
 </body>
